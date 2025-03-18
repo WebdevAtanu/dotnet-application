@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Security.Cryptography.X509Certificates;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace demoApplication.Controllers
@@ -28,6 +29,25 @@ namespace demoApplication.Controllers
         public IActionResult getId(int id)
         {
             return Ok("the given id is " + id); // return the given id
+        }
+
+        public List<string> fruits = new List<string>()  // creating a list of fruits
+        {
+            "apple",
+            "banana",
+            "mango"
+        };
+
+        [HttpGet("fruits")]
+        public List<string> getFruits() // this will return a list
+        {
+            return fruits;
+        }
+
+        [HttpGet("fruits/{id}")]
+        public string getFruits(int id) // this will return a string according index
+        {
+            return fruits.ElementAt(id);
         }
     }
 }
