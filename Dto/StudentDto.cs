@@ -4,6 +4,8 @@ namespace demoApplication.Dto;
 
 public class StudentDto
 {
+
+    public long Id { get; set; }
     // validation implemented
     [Required(ErrorMessage = "Name is required.")]
     [MaxLength(50, ErrorMessage = "Name cannot exceed 50 characters.")]
@@ -11,5 +13,5 @@ public class StudentDto
 
     [Required(ErrorMessage = "Age is required.")]
     [Range(1, 100, ErrorMessage = "Age must be between 1 and 100.")]
-    public int Age { get; set; }
+    public string? Age { get; set; }
 }
