@@ -9,16 +9,16 @@ namespace demoApplication.Services
 {
     public class StudentServices : IStudentService
     {
-        private readonly IStudentInterface _studentInterface;
+        private readonly IStudentRepository _studentRepository;
 
-        public StudentServices(IStudentInterface studentInterface)
+        public StudentServices(IStudentRepository studentRepository)
         {
-            _studentInterface = studentInterface;
+            _studentRepository = studentRepository;
         }
 
         public async Task<IEnumerable<StudentDto>> GetStudents()
         {
-            var students = await _studentInterface.GetStudents();
+            var students = await _studentRepository.GetStudents();
             return students.Select(student => new StudentDto
             {
                 Id = student.Id,
@@ -29,7 +29,7 @@ namespace demoApplication.Services
 
         public async Task<StudentDto?> GetStudentById(int id)
         {
-            var student = await _studentInterface.GetStudentById(id);
+            var student = await _studentRepository.GetStudentById(id);
             if (student == null) return null;
 
             return new StudentDto
@@ -48,7 +48,7 @@ namespace demoApplication.Services
                 Age = studentDto.Age
             };
 
-            var createdStudent = await _studentInterface.CreateStudent(student);
+            var createdStudent = await _studentRepository.CreateStudent(student);
 
             return new StudentDto
             {
@@ -60,13 +60,13 @@ namespace demoApplication.Services
 
         public async Task<StudentDto?> UpdateStudent(int id, StudentDto studentDto)
         {
-            var student = await _studentInterface.GetStudentById(id);
+            var student = await _studentRepository.GetStudentById(id);
             if (student == null) return null;
 
             student.Name = studentDto.Name;
             student.Age = studentDto.Age;
 
-            var updatedStudent = await _studentInterface.UpdateStudent(student);
+            var updatedStudent = await _studentRepository.UpdateStudent(student);
 
             return new StudentDto
             {
@@ -78,7 +78,7 @@ namespace demoApplication.Services
 
         public async Task<bool> DeleteStudent(int id)
         {
-            return await _studentInterface.DeleteStudent(id);
+            return await _studentRepository.DeleteStudent(id);
         }
     }
 }

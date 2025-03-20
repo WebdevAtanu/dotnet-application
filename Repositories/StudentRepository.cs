@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace demoApplication.Repositories
 {
-    public class StudentRepository : IStudentInterface
+    public class StudentRepository : IStudentRepository
     {
         private readonly MyDbContext _context;
 

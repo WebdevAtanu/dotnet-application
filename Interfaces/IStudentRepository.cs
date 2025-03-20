@@ -2,7 +2,7 @@
 
 namespace demoApplication.Interfaces
 {
-    public interface IStudentInterface
+    public interface IStudentRepository
     {
         Task<IEnumerable<Student>> GetStudents();
         Task<Student> GetStudentById(long id);

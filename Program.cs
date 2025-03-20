@@ -14,7 +14,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<MyDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("dbcs"))); // registering the database connection string
 
-builder.Services.AddScoped<IStudentInterface, StudentRepository>();
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<IStudentService, StudentServices>();
 
 var app = builder.Build(); // build config saved to the app variable
