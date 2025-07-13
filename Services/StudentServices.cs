@@ -1,9 +1,6 @@
 ﻿using demoApplication.Dto;
 using demoApplication.Interfaces;
 using demoApplication.Models;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace demoApplication.Services
 {
@@ -16,69 +13,88 @@ namespace demoApplication.Services
             _studentRepository = studentRepository;
         }
 
-        public async Task<IEnumerable<StudentDto>> GetStudents()
+        public async Task<List<StudentResponse>> GetAllStudents()
         {
-            var students = await _studentRepository.GetStudents();
-            return students.Select(student => new StudentDto
+            var students = await _studentRepository.GetAllStudents();
+            return students.Select(student => new StudentResponse
             {
-                Id = student.Id,
+                StudentId = student.StudentId,
                 Name = student.Name,
-                Age = student.Age
+                Age = student.Age,
+                Address = student.Address,
+                DepartmentId = student.DepartmentId,
+                InstructorId = student.InstructorId
             }).ToList();
         }
 
-        public async Task<StudentDto?> GetStudentById(int id)
+        public async Task<StudentResponse?> GetStudentById(Guid studentId)
         {
-            var student = await _studentRepository.GetStudentById(id);
+            var student = await _studentRepository.GetStudentById(studentId);
             if (student == null) return null;
 
-            return new StudentDto
+            return new StudentResponse
             {
-                Id = student.Id,
+                StudentId = student.StudentId,
                 Name = student.Name,
-                Age = student.Age
+                Age = student.Age,
+                Address = student.Address,
+                DepartmentId = student.DepartmentId,
+                InstructorId = student.InstructorId
             };
         }
 
-        public async Task<StudentDto> CreateStudent(StudentDto studentDto)
+        public async Task<StudentResponse> CreateStudent(StudentRequest request)
         {
             var student = new Student
             {
-                Name = studentDto.Name,
-                Age = studentDto.Age
+                StudentId = Guid.NewGuid(),
+                Name = request.Name,
+                Age = request.Age,
+                Address = request.Address,
+                InstructorId = request.InstructorId,
+                DepartmentId = request.DepartmentId
             };
 
             var createdStudent = await _studentRepository.CreateStudent(student);
 
-            return new StudentDto
+            return new StudentResponse
             {
-                Id = createdStudent.Id,
+                StudentId = createdStudent.StudentId,
                 Name = createdStudent.Name,
-                Age = createdStudent.Age
+                Age = createdStudent.Age,
+                Address = createdStudent.Address,
+                DepartmentId = createdStudent.DepartmentId,
+                InstructorId = createdStudent.InstructorId
             };
         }
 
-        public async Task<StudentDto?> UpdateStudent(int id, StudentDto studentDto)
+        public async Task<StudentResponse?> UpdateStudent(Guid studentId, StudentRequest request)
         {
-            var student = await _studentRepository.GetStudentById(id);
+            var student = await _studentRepository.GetStudentById(studentId);
             if (student == null) return null;
 
-            student.Name = studentDto.Name;
-            student.Age = studentDto.Age;
+            student.Name = request.Name;
+            student.Age = request.Age;
+            student.Address = request.Address;
+            student.InstructorId = request.InstructorId;
+            student.DepartmentId = request.DepartmentId;
 
-            var updatedStudent = await _studentRepository.UpdateStudent(student);
+            var updated = await _studentRepository.UpdateStudent(student);
 
-            return new StudentDto
+            return new StudentResponse
             {
-                Id = updatedStudent.Id,
-                Name = updatedStudent.Name,
-                Age = updatedStudent.Age
+                StudentId = updated.StudentId,
+                Name = updated.Name,
+                Age = updated.Age,
+                Address = updated.Address,
+                DepartmentId = updated.DepartmentId,
+                InstructorId = updated.InstructorId
             };
         }
 
-        public async Task<bool> DeleteStudent(int id)
+        public async Task<bool> DeleteStudent(Guid studentId)
         {
-            return await _studentRepository.DeleteStudent(id);
+            return await _studentRepository.DeleteStudent(studentId);
         }
     }
 }

@@ -10,17 +10,17 @@ namespace demoApplication.Repositories
 
         public StudentRepository(MyDbContext context)
         {
-            this._context = context;
+            _context = context;
         }
 
-        public async Task<IEnumerable<Student>> GetStudents()
+        public async Task<List<Student>> GetAllStudents()
         {
             return await _context.Students.ToListAsync();
         }
 
-        public async Task<Student> GetStudentById(long id)
+        public async Task<Student?> GetStudentById(Guid studentId)
         {
-            return await _context.Students.FindAsync(id);
+            return await _context.Students.FindAsync(studentId);
         }
 
         public async Task<Student> CreateStudent(Student student)
@@ -37,9 +37,9 @@ namespace demoApplication.Repositories
             return student;
         }
 
-        public async Task<bool> DeleteStudent(long id)
+        public async Task<bool> DeleteStudent(Guid studentId)
         {
-            var student = await _context.Students.FindAsync(id);
+            var student = await _context.Students.FindAsync(studentId);
             if (student == null)
                 return false;
 

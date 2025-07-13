@@ -4,13 +4,10 @@ namespace demoApplication.Interfaces
 {
     public interface IStudentService
     {
-        Task<IEnumerable<StudentDto>> GetStudents();
-        Task<StudentDto?> GetStudentById(int id);
-        Task<StudentDto> CreateStudent(StudentDto studentDto);
-        Task<StudentDto?> UpdateStudent(int id, StudentDto studentDto);
-        Task<bool> DeleteStudent(int id);
+        Task<List<StudentResponse>> GetAllStudents();
+        Task<StudentResponse?> GetStudentById(Guid studentId);
+        Task<StudentResponse> CreateStudent(StudentRequest studentRequest);
+        Task<StudentResponse?> UpdateStudent(Guid studentId, StudentRequest studentRequest);
+        Task<bool> DeleteStudent(Guid studentId);
     }
 }
-
-
-

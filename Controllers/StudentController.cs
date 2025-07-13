@@ -1,32 +1,30 @@
 ﻿using demoApplication.Dto;
 using demoApplication.Interfaces;
-using demoApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace demoApplication.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StudentController : Controller
+    public class StudentController : ControllerBase
     {
         private readonly IStudentService _studentService;
 
         public StudentController(IStudentService studentService)
         {
-            this._studentService = studentService;
+            _studentService = studentService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Student>>> GetAllProducts()
+        public async Task<ActionResult<List<StudentResponse>>> GetAllStudents()
         {
-            return Ok(await _studentService.GetStudents());
+            return Ok(await _studentService.GetAllStudents());
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Student>> GetProductById(int id)
+        [HttpGet("{studentId}")]
+        public async Task<ActionResult<StudentResponse>> GetStudentById(Guid studentId)
         {
-            var student = await _studentService.GetStudentById(id);
-
+            var student = await _studentService.GetStudentById(studentId);
             if (student == null)
                 return NotFound();
 
@@ -34,27 +32,27 @@ namespace demoApplication.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Student>> CreateStudent([FromBody] StudentDto studentDto)
+        public async Task<ActionResult<StudentResponse>> CreateStudent(StudentRequest studentRequest)
         {
-            var student = await _studentService.CreateStudent(studentDto);
-            return CreatedAtAction(nameof(GetProductById), new { id = student.Id }, student);
+            var created = await _studentService.CreateStudent(studentRequest);
+            return CreatedAtAction(nameof(GetStudentById), new { studentId = created.StudentId }, created);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct(int id, [FromBody] StudentDto studentDto)
+        [HttpPut("{studentId}")]
+        public async Task<ActionResult<StudentResponse>> UpdateStudent(Guid studentId, StudentRequest studentRequest)
         {
-            var updatedProduct = await _studentService.UpdateStudent(id, studentDto);
-            if (updatedProduct == null)
+            var updated = await _studentService.UpdateStudent(studentId, studentRequest);
+            if (updated == null)
                 return NotFound();
 
-            return Ok(updatedProduct);
+            return Ok(updated);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(int id)
+        [HttpDelete("{studentId}")]
+        public async Task<IActionResult> DeleteStudent(Guid studentId)
         {
-            var result = await _studentService.DeleteStudent(id);
-            if (!result)
+            var deleted = await _studentService.DeleteStudent(studentId);
+            if (!deleted)
                 return NotFound();
 
             return NoContent();

@@ -4,10 +4,10 @@ namespace demoApplication.Interfaces
 {
     public interface IStudentRepository
     {
-        Task<IEnumerable<Student>> GetStudents();
-        Task<Student> GetStudentById(long id);
+        Task<List<Student>> GetAllStudents();
+        Task<Student?> GetStudentById(Guid studentId);
         Task<Student> CreateStudent(Student student);
         Task<Student> UpdateStudent(Student student);
-        Task<bool> DeleteStudent(long id);
+        Task<bool> DeleteStudent(Guid studentId);
     }
 }

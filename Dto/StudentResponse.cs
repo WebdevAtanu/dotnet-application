@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace demoApplication.Models;
+namespace demoApplication.Dto;
 
-[Table("Student")]
-public partial class Student
+public class StudentResponse
 {
-    [Key]
     public Guid StudentId { get; set; }
     public string? Name { get; set; }
     public int? Age { get; set; }

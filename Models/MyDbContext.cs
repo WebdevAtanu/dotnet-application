@@ -10,12 +10,6 @@ public partial class MyDbContext : DbContext
         : base(options)
     {
     }
-
-    public virtual DbSet<Student> Students { get; set; } // db set defined for student model
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Student>().ToTable("Student"); // it maps to the correct table name
-    }
+    public virtual DbSet<Student> Students { get; set; } 
 
 }
