@@ -5,9 +5,9 @@ namespace demoApplication.Interfaces
     public interface IStudentService
     {
         Task<List<StudentResponse>> GetAllStudents();
-        Task<StudentResponse?> GetStudentById(Guid studentId);
-        Task<StudentResponse> CreateStudent(StudentRequest studentRequest);
-        Task<StudentResponse?> UpdateStudent(Guid studentId, StudentRequest studentRequest);
-        Task<bool> DeleteStudent(Guid studentId);
+        Task<StudentResponse?> GetStudentById(int studentId);
+        Task<bool> CreateStudent(StudentRequest studentRequest);
+        Task<bool> UpdateStudent(int studentId, StudentRequest studentRequest);
+        Task<bool> DeleteStudent(int studentId);
     }
 }

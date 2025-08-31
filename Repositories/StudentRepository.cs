@@ -1,4 +1,5 @@
-﻿using demoApplication.Interfaces;
+﻿using demoApplication.Dto;
+using demoApplication.Interfaces;
 using demoApplication.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,31 +14,67 @@ namespace demoApplication.Repositories
             _context = context;
         }
 
-        public async Task<List<Student>> GetAllStudents()
+        public async Task<List<StudentResponse>> GetAllStudents()
         {
-            return await _context.Students.ToListAsync();
+            return await _context.Students.Select(student => new StudentResponse
+            {
+                StudentId = student.StudentId,
+                Name = student.Name,
+                Age = student.Age,
+                Address = student.Address,
+            }).ToListAsync();
         }
 
-        public async Task<Student?> GetStudentById(Guid studentId)
+        public async Task<StudentResponse?> GetStudentById(int studentId)
         {
-            return await _context.Students.FindAsync(studentId);
+            var student = await _context.Students.FindAsync(studentId);
+
+            if (student == null)
+                return null;
+
+            return new StudentResponse
+            {
+                StudentId = student.StudentId,
+                Name = student.Name,
+                Age = student.Age,
+                Address = student.Address
+            };
         }
 
-        public async Task<Student> CreateStudent(Student student)
+        public async Task<bool> CreateStudent(StudentRequest studentRequest)
         {
+            var student = new Student
+            {
+                Name = studentRequest.Name,
+                Age = studentRequest.Age,
+                Address = studentRequest.Address,
+            };
+
             _context.Students.Add(student);
-            await _context.SaveChangesAsync();
-            return student;
+            var result = await _context.SaveChangesAsync();
+
+            return result > 0;
         }
 
-        public async Task<Student> UpdateStudent(Student student)
+        public async Task<bool> UpdateStudent(int studentId, StudentRequest studentRequest)
         {
+            var student = await _context.Students.FindAsync(studentId);
+            if (student == null)
+            {
+                return false;
+            }
+
+            student.Name = studentRequest.Name;
+            student.Age = studentRequest.Age;
+            student.Address = studentRequest.Address;
+
             _context.Students.Update(student);
-            await _context.SaveChangesAsync();
-            return student;
+            var result = await _context.SaveChangesAsync();
+
+            return result > 0;
         }
 
-        public async Task<bool> DeleteStudent(Guid studentId)
+        public async Task<bool> DeleteStudent(int studentId)
         {
             var student = await _context.Students.FindAsync(studentId);
             if (student == null)

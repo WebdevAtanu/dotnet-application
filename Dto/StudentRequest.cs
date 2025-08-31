@@ -12,6 +12,4 @@ public class StudentRequest
     [Range(1, 100, ErrorMessage = "Age must be between 1 and 100.")]
     public int? Age { get; set; }
     public string? Address { get; set; }
-    public Guid? InstructorId { get; set; }
-    public Guid? DepartmentId { get; set; }
 }

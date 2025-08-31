@@ -5,14 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace demoApplication.Models;
 
-[Table("Student")]
+[Table("student")]
 public partial class Student
 {
     [Key]
-    public Guid StudentId { get; set; }
+    public int StudentId { get; set; }
     public string? Name { get; set; }
     public int? Age { get; set; }
     public string? Address { get; set; }
-    public Guid? InstructorId { get; set; }
-    public Guid? DepartmentId { get; set; }
 }

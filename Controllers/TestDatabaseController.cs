@@ -16,7 +16,7 @@ namespace demoApplication.Controllers
             this.context = context;
         }
 
-        [HttpGet("check-db")]
+        [HttpGet("connection")]
         public IActionResult CheckDatabaseConnection()
         {
             try
